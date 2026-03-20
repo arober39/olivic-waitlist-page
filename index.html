@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Olivic Waitlist</title>
+    <meta
+      name="description"
+      content="Join the Olivic waitlist and get early access to creator strategy tools that turn ideas into growth."
+    />
+    <style>
+      :root {
+        --bg: #f6f4fb;
+        --surface: #ffffff;
+        --surface-2: #f2eefc;
+        --text: #1f1e29;
+        --muted: #6f6a86;
+        --line: #e8e3f5;
+        --primary: #6e5af5;
+        --primary-strong: #5d49e6;
+        --primary-soft: #ece8ff;
+        --success: #147a42;
+        --danger: #b73b3b;
+        --radius: 16px;
+        --shadow: 0 10px 30px rgba(61, 50, 120, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        color: var(--text);
+        background: radial-gradient(
+            circle at 10% -20%,
+            #efeaff 0%,
+            transparent 48%
+          ),
+          radial-gradient(circle at 100% 0%, #eae5fd 0%, transparent 34%),
+          var(--bg);
+      }
+
+      .page {
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+      }
+
+      .container {
+        width: min(1080px, calc(100% - 2rem));
+        margin: 0 auto;
+      }
+
+      header {
+        border-bottom: 1px solid var(--line);
+        backdrop-filter: blur(5px);
+      }
+
+      .topbar {
+        height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
+
+      .brand-badge {
+        width: 30px;
+        height: 30px;
+        border-radius: 999px;
+        background: linear-gradient(145deg, #7a68ff, #5f4ced);
+        box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.7);
+      }
+
+      .nav-pill {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.75);
+        color: var(--muted);
+        border-radius: 999px;
+        padding: 0.48rem 0.9rem;
+        font-size: 0.9rem;
+      }
+
+      main {
+        padding: 3.6rem 0 2.5rem;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 1.2rem;
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      .hero-copy {
+        padding: 2.2rem;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        border-radius: 999px;
+        background: var(--primary-soft);
+        color: var(--primary-strong);
+        font-weight: 600;
+        font-size: 0.83rem;
+        padding: 0.35rem 0.7rem;
+      }
+
+      h1 {
+        font-size: clamp(1.8rem, 3vw, 2.75rem);
+        line-height: 1.1;
+        margin: 1rem 0 0.9rem;
+      }
+
+      .sub {
+        color: var(--muted);
+        line-height: 1.6;
+        max-width: 55ch;
+        margin-bottom: 1.5rem;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.8rem;
+      }
+
+      .stat {
+        border-radius: 12px;
+        background: #fbfaff;
+        border: 1px solid var(--line);
+        padding: 0.7rem 0.8rem;
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 1.08rem;
+      }
+
+      .stat span {
+        color: var(--muted);
+        font-size: 0.84rem;
+      }
+
+      .waitlist-card {
+        padding: 1.2rem;
+      }
+
+      .waitlist-head {
+        padding: 0.5rem 0.45rem 1rem;
+      }
+
+      .waitlist-head h2 {
+        margin: 0 0 0.35rem;
+        font-size: 1.2rem;
+      }
+
+      .waitlist-head p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      form {
+        border: 1px solid var(--line);
+        background: #fcfbff;
+        border-radius: 14px;
+        padding: 0.9rem;
+      }
+
+      label {
+        display: block;
+        font-size: 0.85rem;
+        margin-bottom: 0.35rem;
+        color: var(--muted);
+      }
+
+      input,
+      textarea,
+      button {
+        font: inherit;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        border-radius: 10px;
+        border: 1px solid #ddd7f1;
+        background: white;
+        color: var(--text);
+        padding: 0.78rem 0.82rem;
+        outline: none;
+        transition: border-color 0.15s ease;
+      }
+
+      input:focus,
+      textarea:focus {
+        border-color: #b4a6ff;
+      }
+
+      .field {
+        margin-bottom: 0.7rem;
+      }
+
+      .submit {
+        margin-top: 0.25rem;
+        width: 100%;
+        border: 0;
+        border-radius: 10px;
+        padding: 0.74rem 0.9rem;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        background: linear-gradient(140deg, var(--primary), var(--primary-strong));
+        box-shadow: 0 8px 18px rgba(110, 90, 245, 0.35);
+      }
+
+      .submit:hover {
+        filter: brightness(1.03);
+      }
+
+      .helper {
+        margin-top: 0.75rem;
+        min-height: 1.1rem;
+        font-size: 0.9rem;
+      }
+
+      .helper.error {
+        color: var(--danger);
+      }
+
+      .helper.success {
+        color: var(--success);
+      }
+
+      .features {
+        margin-top: 1rem;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.9rem;
+      }
+
+      .feature {
+        padding: 1rem;
+      }
+
+      .feature h3 {
+        margin: 0.15rem 0 0.45rem;
+        font-size: 1.03rem;
+      }
+
+      .feature p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.5;
+        font-size: 0.93rem;
+      }
+
+      footer {
+        padding: 1.2rem 0 2rem;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 900px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .stats,
+        .features {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-copy {
+          padding: 1.25rem;
+        }
+
+        .waitlist-card {
+          padding: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="container topbar">
+          <div class="brand">
+            <span class="brand-badge" aria-hidden="true"></span>
+            <span>Olivic</span>
+          </div>
+          <div class="nav-pill">Early Access</div>
+        </div>
+      </header>
+
+      <main>
+        <section class="container hero">
+          <article class="card hero-copy">
+            <span class="eyebrow">Creator Strategy Platform</span>
+            <h1>Build your brand roadmap faster with Olivic.</h1>
+            <p class="sub">
+              Turn interviews into strategy, content plans, and actionable growth
+              insights in one clean workflow. Join the waitlist to get priority
+              access at launch.
+            </p>
+            <div class="stats">
+              <div class="stat">
+                <strong>90-Day Plans</strong>
+                <span>Generated from your profile</span>
+              </div>
+              <div class="stat">
+                <strong>Content Pillars</strong>
+                <span>On-brand and consistent</span>
+              </div>
+              <div class="stat">
+                <strong>Smart Insights</strong>
+                <span>Focused on next actions</span>
+              </div>
+            </div>
+          </article>
+
+          <aside class="card waitlist-card">
+            <div class="waitlist-head">
+              <h2>Join the waitlist</h2>
+              <p>Be first to know when access opens.</p>
+            </div>
+            <form id="waitlist-form" novalidate>
+              <div class="field">
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" autocomplete="name" required />
+              </div>
+              <div class="field">
+                <label for="email">Email</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  placeholder="you@brand.com"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label for="goal">What do you want help with first?</label>
+                <textarea
+                  id="goal"
+                  name="goal"
+                  rows="3"
+                  placeholder="Ex: Positioning, content strategy, growth plan..."
+                ></textarea>
+              </div>
+              <button class="submit" type="submit">Request Early Access</button>
+              <p class="helper" id="form-status" aria-live="polite"></p>
+            </form>
+          </aside>
+        </section>
+
+        <section class="container features">
+          <article class="card feature">
+            <h3>Onboarding Interview</h3>
+            <p>
+              Capture your niche, voice, and goals through a guided flow designed
+              for creator businesses.
+            </p>
+          </article>
+          <article class="card feature">
+            <h3>Strategy + Execution</h3>
+            <p>
+              Generate focused roadmaps and content systems so planning turns into
+              daily output.
+            </p>
+          </article>
+          <article class="card feature">
+            <h3>Performance Feedback Loop</h3>
+            <p>
+              Track what is working, identify gaps, and get practical next steps to
+              keep momentum.
+            </p>
+          </article>
+        </section>
+      </main>
+
+      <footer>
+        <div class="container">Olivic v1.0 - Built for creator-led brands.</div>
+      </footer>
+    </div>
+
+    <script>
+      const form = document.getElementById("waitlist-form");
+      const statusText = document.getElementById("form-status");
+
+      function isValidEmail(value) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+      }
+
+      // Set this to your deployed Vercel function URL.
+      // Example: https://your-project.vercel.app/api/waitlist
+      const WAITLIST_API_URL = "PASTE_YOUR_VERCEL_FUNCTION_URL_HERE";
+
+      async function sendToWaitlistApi(payload) {
+        if (
+          !WAITLIST_API_URL ||
+          WAITLIST_API_URL === "PASTE_YOUR_VERCEL_FUNCTION_URL_HERE"
+        ) {
+          return { ok: false, reason: "missing_api_url" };
+        }
+
+        const response = await fetch(WAITLIST_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        return { ok: response.ok, status: response.status };
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        statusText.className = "helper";
+        statusText.textContent = "";
+
+        const formData = new FormData(form);
+        const name = String(formData.get("name") || "").trim();
+        const email = String(formData.get("email") || "").trim();
+        const goal = String(formData.get("goal") || "").trim();
+
+        if (!name || !email) {
+          statusText.classList.add("error");
+          statusText.textContent = "Please fill out name and email.";
+          return;
+        }
+
+        if (!isValidEmail(email)) {
+          statusText.classList.add("error");
+          statusText.textContent = "Please enter a valid email address.";
+          return;
+        }
+
+        statusText.textContent = "Submitting...";
+
+        try {
+          const result = await sendToWaitlistApi({
+            name,
+            email,
+            goal,
+            submittedAt: new Date().toISOString(),
+            source: "github-pages-waitlist",
+          });
+
+          if (!result.ok && result.reason === "missing_api_url") {
+            statusText.classList.add("error");
+            statusText.textContent =
+              "Form works, but Vercel API URL is not configured yet.";
+            return;
+          }
+
+          if (!result.ok) {
+            statusText.classList.add("error");
+            statusText.textContent =
+              "We couldn't submit right now. Please try again in a moment.";
+            return;
+          }
+
+          statusText.classList.add("success");
+          statusText.textContent =
+            "You're on the list. We'll reach out as soon as access opens.";
+          form.reset();
+        } catch (error) {
+          statusText.classList.add("error");
+          statusText.textContent =
+            "Network error while submitting. Please try again.";
+        }
+      });
+    </script>
+  </body>
+</html>
