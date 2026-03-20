@@ -433,7 +433,14 @@
           body: JSON.stringify(payload),
         });
 
-        return { ok: response.ok, status: response.status };
+        let data = null;
+        try {
+          data = await response.json();
+        } catch {
+          data = null;
+        }
+
+        return { ok: response.ok, status: response.status, data };
       }
 
       form.addEventListener("submit", async (event) => {
@@ -478,8 +485,13 @@
 
           if (!result.ok) {
             statusText.classList.add("error");
-            statusText.textContent =
-              "We couldn't submit right now. Please try again in a moment.";
+            const hint =
+              result.data &&
+              (result.data.message ||
+                (typeof result.data.error === "string" ? result.data.error : null));
+            statusText.textContent = hint
+              ? `Couldn't save: ${hint}`
+              : "We couldn't submit right now. Please try again in a moment.";
             return;
           }
 

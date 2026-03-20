@@ -1,3 +1,15 @@
+function parseJsonBody(req) {
+  if (!req.body) return {};
+  if (typeof req.body === "string") {
+    try {
+      return JSON.parse(req.body);
+    } catch {
+      return {};
+    }
+  }
+  return req.body;
+}
+
 module.exports = async function handler(req, res) {
   const allowOrigin = process.env.ALLOW_ORIGIN || "*";
 
@@ -21,7 +33,7 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: "Server is not configured" });
   }
 
-  const body = req.body || {};
+  const body = parseJsonBody(req);
   const name = String(body.name || "").trim();
   const email = String(body.email || "").trim();
   const goal = String(body.goal || "").trim();
@@ -37,20 +49,30 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: "Invalid email" });
   }
 
-  const airtableFieldName = process.env.AIRTABLE_FIELD_NAME || "Name";
-  const airtableFieldEmail = process.env.AIRTABLE_FIELD_EMAIL || "Email";
-  const airtableFieldGoal = process.env.AIRTABLE_FIELD_GOAL || "Goal";
+  // Defaults match common lowercase/camelCase Airtable schemas (see .env.example).
+  const airtableFieldName = process.env.AIRTABLE_FIELD_NAME || "name";
+  const airtableFieldEmail = process.env.AIRTABLE_FIELD_EMAIL || "email";
+  /** Form "goal" maps here — your base uses "Signup Summary" for notes. */
+  const airtableFieldGoal =
+    process.env.AIRTABLE_FIELD_GOAL || "Signup Summary";
   const airtableFieldSubmittedAt =
-    process.env.AIRTABLE_FIELD_SUBMITTED_AT || "Submitted At";
-  const airtableFieldSource = process.env.AIRTABLE_FIELD_SOURCE || "Source";
+    process.env.AIRTABLE_FIELD_SUBMITTED_AT || "submittedAt";
+  const airtableFieldSource = process.env.AIRTABLE_FIELD_SOURCE || "source";
 
+  /** Only include fields with values — empty strings can break some Airtable field types. */
   const fields = {
     [airtableFieldName]: name,
     [airtableFieldEmail]: email,
-    [airtableFieldGoal]: goal,
-    [airtableFieldSubmittedAt]: submittedAt,
-    [airtableFieldSource]: source,
   };
+  if (goal) {
+    fields[airtableFieldGoal] = goal;
+  }
+  if (process.env.AIRTABLE_OMIT_SUBMITTED_AT !== "true") {
+    fields[airtableFieldSubmittedAt] = submittedAt;
+  }
+  if (process.env.AIRTABLE_OMIT_SOURCE !== "true") {
+    fields[airtableFieldSource] = source;
+  }
 
   try {
     const airtableResponse = await fetch(
@@ -69,10 +91,29 @@ module.exports = async function handler(req, res) {
     );
 
     if (!airtableResponse.ok) {
-      const details = await airtableResponse.text();
-      return res.status(502).json({
+      const raw = await airtableResponse.text();
+      let parsed;
+      try {
+        parsed = JSON.parse(raw);
+      } catch {
+        parsed = raw;
+      }
+      const airtableError =
+        parsed && typeof parsed === "object" && parsed.error
+          ? parsed.error
+          : null;
+      const message =
+        airtableError?.message ||
+        (typeof parsed === "string" ? parsed : JSON.stringify(parsed));
+      const clientStatus =
+        airtableResponse.status === 422 || airtableResponse.status === 403
+          ? 400
+          : 502;
+      return res.status(clientStatus).json({
         error: "Failed to write to Airtable",
-        details,
+        message,
+        airtableStatus: airtableResponse.status,
+        details: parsed,
       });
     }
 
