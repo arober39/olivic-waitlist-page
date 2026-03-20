@@ -10,8 +10,19 @@ function parseJsonBody(req) {
   return req.body;
 }
 
+/**
+ * Browsers require a valid origin URL, e.g. https://arober39.github.io
+ * (not just arober39.github.io — that breaks CORS).
+ */
+function normalizeAllowOrigin(raw) {
+  const value = String(raw ?? "").trim();
+  if (!value || value === "*") return "*";
+  if (/^https?:\/\//i.test(value)) return value;
+  return `https://${value.replace(/^\/+/, "")}`;
+}
+
 module.exports = async function handler(req, res) {
-  const allowOrigin = process.env.ALLOW_ORIGIN || "*";
+  const allowOrigin = normalizeAllowOrigin(process.env.ALLOW_ORIGIN || "*");
 
   res.setHeader("Access-Control-Allow-Origin", allowOrigin);
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
